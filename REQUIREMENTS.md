@@ -18,7 +18,7 @@ Your task is to build one HTTP API that allows employees to make vacation reques
   - [x] See an overview of all requests
     - [x] Filter by pending and approved
   - [x] See an overview for each individual employee
-  - [ ] See an overview of overlapping requests
+  - [x] See an overview of overlapping requests
   - [x] Process an individual request and either approve or reject it
 - [ ] Write tests for your business logic
 
