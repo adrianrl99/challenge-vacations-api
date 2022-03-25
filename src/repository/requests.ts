@@ -8,6 +8,11 @@ import {
 
 export type RequestsOptions = {
   status?: RequestStatus
+  range?: {
+    start_date: string | number | Date
+    end_date: string | number | Date
+  }
+  month?: number
 }
 
 export type RequestsRepository = {
@@ -26,13 +31,40 @@ export enum RequestRepositoryErrors {
   NotFound = 'Request not found',
 }
 
+export type FilterRequestsByOptions = (
+  requests: Request[],
+  options?: RequestsOptions,
+) => Request[]
+const filterRequestsByOptions: FilterRequestsByOptions = (requests, options) =>
+  !options
+    ? requests
+    : requests
+        .filter(r => (options.status ? r.status === options.status : true))
+        .filter(r =>
+          !options.month
+            ? true
+            : new Date(r.vacation_start_date).getMonth() ===
+                options.month - 1 ||
+              new Date(r.vacation_end_date).getMonth() === options.month - 1,
+        )
+        .filter(r =>
+          !options.range ||
+          (!options.range.start_date && !options.range.end_date)
+            ? true
+            : new Date(r.vacation_start_date).getTime() >=
+                new Date(options.range.start_date).getTime() &&
+              new Date(r.vacation_start_date).getTime() <=
+                new Date(options.range.end_date).getTime() &&
+              new Date(r.vacation_end_date).getTime() >=
+                new Date(options.range.start_date).getTime() &&
+              new Date(r.vacation_end_date).getTime() <=
+                new Date(options.range.end_date).getTime(),
+        )
+
 export const mockRequestsRepository = (
   requests: Request[],
 ): RequestsRepository => ({
-  getRequests: async options =>
-    requests.filter(r =>
-      options?.status ? r.status === options.status : true,
-    ),
+  getRequests: async options => filterRequestsByOptions(requests, options),
   getRequestById: async id => {
     const request = requests.find(v => v.id === id)
 
@@ -43,9 +75,10 @@ export const mockRequestsRepository = (
     return request
   },
   getRequestsByWorkerId: async (id, options) =>
-    requests
-      .filter(r => r.author === id)
-      .filter(r => (options?.status ? r.status === options.status : true)),
+    filterRequestsByOptions(
+      requests.filter(r => r.author === id),
+      options,
+    ),
   setRequest: async request => {
     if (request.vacation_end_date <= request.vacation_start_date) {
       throw RequestRepositoryErrors.InvalidVacation

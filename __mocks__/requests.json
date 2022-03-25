@@ -6,8 +6,8 @@
     "resolved_by": "1",
     "created_at": 1647957561003,
     "updated_at": 1647957561003,
-    "vacation_start_date": 1647957561003,
-    "vacation_end_date": 1647957561003
+    "vacation_start_date": 1641013200000,
+    "vacation_end_date": 1641790800000
   },
   {
     "id": "2",
@@ -16,7 +16,17 @@
     "resolved_by": "1",
     "created_at": 1647957561003,
     "updated_at": 1647957561003,
-    "vacation_start_date": 1647957561003,
-    "vacation_end_date": 1647957561003
+    "vacation_start_date": 1642222800000,
+    "vacation_end_date": 1643778000000
+  },
+  {
+    "id": "3",
+    "author": "1",
+    "status": "rejected",
+    "resolved_by": "1",
+    "created_at": 1651377600000,
+    "updated_at": 1651377600000,
+    "vacation_start_date": 1651377600000,
+    "vacation_end_date": 1651377600000
   }
 ]

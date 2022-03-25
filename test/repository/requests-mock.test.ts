@@ -16,6 +16,36 @@ const mockRequest: Request = {
   vacation_start_date: 1647957561003,
   vacation_end_date: 1647957561003,
 }
+const mockRequestJanuary: Request = {
+  id: '1',
+  author: '1',
+  status: 'approved',
+  resolved_by: '1',
+  created_at: 1647957561003,
+  updated_at: 1647957561003,
+  vacation_start_date: new Date('1-1-2022').getTime(),
+  vacation_end_date: new Date('1-10-2022').getTime(),
+}
+const mockRequestFebruary: Request = {
+  id: '1',
+  author: '1',
+  status: 'rejected',
+  resolved_by: '1',
+  created_at: 1647957561003,
+  updated_at: 1647957561003,
+  vacation_start_date: new Date('2-1-2022').getTime(),
+  vacation_end_date: new Date('2-10-2022').getTime(),
+}
+const mockRequestJanuaryFebruary: Request = {
+  id: '1',
+  author: '1',
+  status: 'pending',
+  resolved_by: '1',
+  created_at: 1647957561003,
+  updated_at: 1647957561003,
+  vacation_start_date: new Date('1-15-2022').getTime(),
+  vacation_end_date: new Date('2-2-2022').getTime(),
+}
 
 /// Get requests
 test('getRequests -> it works', async t => {
@@ -34,6 +64,61 @@ test('getRequests -> filtered by status empty', async t => {
   const requests = await mockRequestsRepository([mockRequest]).getRequests({
     status: 'approved',
   })
+  t.deepEqual(requests, [])
+})
+
+test('getRequests -> filtered by month works', async t => {
+  const mockRequests: Request[] = [
+    mockRequestJanuary,
+    mockRequestFebruary,
+    mockRequestJanuaryFebruary,
+  ]
+  const requests = await mockRequestsRepository(mockRequests).getRequests({
+    month: 1,
+  })
+  t.deepEqual(requests, [mockRequestJanuary, mockRequestJanuaryFebruary])
+})
+
+test('getRequests -> filtered by month empty', async t => {
+  const mockRequests: Request[] = [
+    mockRequestJanuary,
+    mockRequestFebruary,
+    mockRequestJanuaryFebruary,
+  ]
+  const requests = await mockRequestsRepository(mockRequests).getRequests({
+    month: 3,
+  })
+  t.deepEqual(requests, [])
+})
+
+test('getRequests -> filtered by range works', async t => {
+  const mockRequests: Request[] = [
+    mockRequestJanuary,
+    mockRequestFebruary,
+    mockRequestJanuaryFebruary,
+  ]
+  const requests = await mockRequestsRepository(mockRequests).getRequests({
+    month: 1,
+  })
+
+  t.deepEqual(requests, [mockRequestJanuary, mockRequestJanuaryFebruary])
+})
+
+test('getRequests -> filtered by range empty', async t => {
+  const mockRequests: Request[] = [
+    mockRequestJanuary,
+    mockRequestFebruary,
+    mockRequestJanuaryFebruary,
+  ]
+  const requests = await mockRequestsRepository(mockRequests).getRequests({
+    range: {
+      start_date: new Date('10-1-2022').getTime(),
+      end_date: new Date('10-10-2022').getTime(),
+    },
+  })
+
+  console.log(requests)
+
   t.deepEqual(requests, [])
 })
 

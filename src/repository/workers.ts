@@ -1,17 +1,12 @@
 import {
   Request,
-  RequestStatus,
   Worker,
   WorkerPartialToken,
   WorkerPartialVacation,
 } from '~/models'
 import { diffDates } from '~/utils/helpers'
 
-import { RequestsRepository } from './requests'
-
-export type GetWorkerRequestsOptions = {
-  status?: RequestStatus
-}
+import { RequestsOptions, RequestsRepository } from './requests'
 
 export type WorkersRepository = {
   getWorkers: () => Promise<Worker[]>
@@ -20,7 +15,7 @@ export type WorkersRepository = {
   getWorkerVacations: (id: string) => Promise<number>
   getWorkerRequests: (
     id: string,
-    options?: GetWorkerRequestsOptions,
+    options?: RequestsOptions,
   ) => Promise<Request[]>
   updateToken: (worker: WorkerPartialToken) => Promise<Worker>
   updateVacations: (vacation: WorkerPartialVacation) => Promise<Request>
@@ -74,9 +69,7 @@ export const mockWorkersRepository = (
       throw WorkersRepositoryErrors.NotFound
     }
 
-    return requests.getRequestsByWorkerId(worker.id, {
-      status: options?.status,
-    })
+    return requests.getRequestsByWorkerId(worker.id, options)
   },
   updateToken: async worker => {
     const workerIndex = workers.findIndex(w => w.id === worker.id)

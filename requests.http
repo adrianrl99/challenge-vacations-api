@@ -46,6 +46,14 @@ Authorization: Bearer {{token.response.headers.X-AuthToken}}
 GET {{base}}/v1/workers/worker1/requests?status=approved HTTP/1.1
 Authorization: Bearer {{token.response.headers.X-AuthToken}}
 
+### GET Worker requests filtered by range (only workers)
+GET {{base}}/v1/workers/worker1/requests?start_date=1-1-2022&end_date=1-15-2022 HTTP/1.1
+Authorization: Bearer {{token.response.headers.X-AuthToken}}
+
+### GET Worker requests filtered by month (only workers)
+GET {{base}}/v1/workers/worker1/requests?month=1 HTTP/1.1
+Authorization: Bearer {{token.response.headers.X-AuthToken}}
+
 ### GET Worker vacations (only workers)
 GET {{base}}/v1/workers/worker1/vacations HTTP/1.1
 Authorization: Bearer {{token.response.headers.X-AuthToken}}
@@ -69,6 +77,14 @@ Authorization: Bearer {{token.response.headers.X-AuthToken}}
 
 ### GET Requests filtered by status (only managers)
 GET {{base}}/v1/requests?status=pending HTTP/1.1
+Authorization: Bearer {{token.response.headers.X-AuthToken}}
+
+### GET requests filtered by range (only workers)
+GET {{base}}/v1/requests?start_date=1-1-2022&end_date=2-2-2022 HTTP/1.1
+Authorization: Bearer {{token.response.headers.X-AuthToken}}
+
+### GET requests filtered by month (only workers)
+GET {{base}}/v1/requests?month=2 HTTP/1.1
 Authorization: Bearer {{token.response.headers.X-AuthToken}}
 
 ### Managers ###
