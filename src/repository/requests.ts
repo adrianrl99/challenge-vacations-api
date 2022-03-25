@@ -51,14 +51,14 @@ const filterRequestsByOptions: FilterRequestsByOptions = (requests, options) =>
           !options.range ||
           (!options.range.start_date && !options.range.end_date)
             ? true
-            : new Date(r.vacation_start_date).getTime() >=
+            : (new Date(r.vacation_start_date).getTime() >=
                 new Date(options.range.start_date).getTime() &&
-              new Date(r.vacation_start_date).getTime() <=
-                new Date(options.range.end_date).getTime() &&
-              new Date(r.vacation_end_date).getTime() >=
+                new Date(r.vacation_start_date).getTime() <=
+                  new Date(options.range.end_date).getTime()) ||
+              (new Date(r.vacation_end_date).getTime() >=
                 new Date(options.range.start_date).getTime() &&
-              new Date(r.vacation_end_date).getTime() <=
-                new Date(options.range.end_date).getTime(),
+                new Date(r.vacation_end_date).getTime() <=
+                  new Date(options.range.end_date).getTime()),
         )
 
 export const mockRequestsRepository = (

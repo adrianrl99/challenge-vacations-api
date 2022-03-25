@@ -91,14 +91,33 @@ test('getRequests -> filtered by month empty', async t => {
   t.deepEqual(requests, [])
 })
 
-test('getRequests -> filtered by range works', async t => {
+test('getRequests -> filtered by range works 1/1/2022 to 10/1/2022', async t => {
   const mockRequests: Request[] = [
     mockRequestJanuary,
     mockRequestFebruary,
     mockRequestJanuaryFebruary,
   ]
   const requests = await mockRequestsRepository(mockRequests).getRequests({
-    month: 1,
+    range: {
+      start_date: new Date('1-1-2022').getTime(),
+      end_date: new Date('1-10-2022').getTime(),
+    },
+  })
+
+  t.deepEqual(requests, [mockRequestJanuary])
+})
+
+test('getRequests -> filtered by range works 1/1/2022 to 2/2/2022', async t => {
+  const mockRequests: Request[] = [
+    mockRequestJanuary,
+    mockRequestFebruary,
+    mockRequestJanuaryFebruary,
+  ]
+  const requests = await mockRequestsRepository(mockRequests).getRequests({
+    range: {
+      start_date: new Date('1-1-2022').getTime(),
+      end_date: new Date('1-20-2022').getTime(),
+    },
   })
 
   t.deepEqual(requests, [mockRequestJanuary, mockRequestJanuaryFebruary])
@@ -117,9 +136,20 @@ test('getRequests -> filtered by range empty', async t => {
     },
   })
 
-  console.log(requests)
-
   t.deepEqual(requests, [])
+})
+
+test('getRequests -> filtered by range with empty range', async t => {
+  const mockRequests: Request[] = [
+    mockRequestJanuary,
+    mockRequestFebruary,
+    mockRequestJanuaryFebruary,
+  ]
+  const requests = await mockRequestsRepository(mockRequests).getRequests({
+    range: {} as never,
+  })
+
+  t.deepEqual(requests, mockRequests)
 })
 
 test('getRequests -> empty', async t => {
