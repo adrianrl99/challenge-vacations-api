@@ -1,0 +1,31 @@
+{
+  "ts-node": {
+    "files": true
+  },
+  "files": ["src/custom.d.ts"],
+  "compilerOptions": {
+    "target": "ES6",
+    "useDefineForClassFields": true,
+    "lib": ["ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "noEmit": false,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/lib/*"],
+      "#/*": ["./__mocks__/*"],
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["./src", "./test", "test/repository/requests.mock.test.ts"],
+  "exclude": ["node_modules"]
+}

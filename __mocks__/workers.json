@@ -1,0 +1,10 @@
+[
+  {
+    "id": "1",
+    "name": "worker1",
+    "password": "!Q2w3e4r",
+    "remaining_vacations": 30,
+    "created_at": 1647957561003,
+    "updated_at": 1647957561003
+  }
+]
