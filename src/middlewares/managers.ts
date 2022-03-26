@@ -33,5 +33,7 @@ export const allowManagers: RequestHandler = (req, res, next) => {
     } catch {
       res.status(400).send({ error: 'Invalid token' })
     }
+  } else {
+    res.status(401).send({ error: 'Unauthorized' })
   }
 }

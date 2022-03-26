@@ -1,11 +1,19 @@
 import { Router } from 'express'
 
-import { getManagers, processVacationsRequest } from '~/controllers/managers'
+import {
+  getManagersController,
+  processVacationsRequestController,
+} from '~/controllers/managers'
 import { allowManagers } from '~/middlewares'
+import { repos } from '~/repository'
 
 const router = Router()
 
-router.get('/', allowManagers, getManagers)
-router.put('/request', allowManagers, processVacationsRequest)
+router.get('/', allowManagers, getManagersController(repos.managers))
+router.put(
+  '/request',
+  allowManagers,
+  processVacationsRequestController(repos.managers),
+)
 
 export default router

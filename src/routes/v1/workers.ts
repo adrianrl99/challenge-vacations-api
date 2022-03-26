@@ -1,21 +1,34 @@
 import { Router } from 'express'
 
 import {
-  getWorker,
-  getWorkerRequests,
-  getWorkers,
-  getWorkerVacations,
-  makeVacationsRequest,
+  getWorkerController,
+  getWorkerRequestsController,
+  getWorkersController,
+  getWorkerVacationsController,
+  makeVacationsRequestController,
 } from '~/controllers/workers'
 import { allowManagers } from '~/middlewares'
 import { allowWorkers } from '~/middlewares/workers'
+import { repos } from '~/repository'
 
 const router = Router()
 
-router.get('/', allowManagers, getWorkers)
-router.get('/:name', allowManagers, getWorker)
-router.get('/:name/requests', allowWorkers, getWorkerRequests)
-router.get('/:name/vacations', allowWorkers, getWorkerVacations)
-router.put('/:name/vacations', allowWorkers, makeVacationsRequest)
+router.get('/', allowManagers, getWorkersController(repos.workers))
+router.get('/:name', allowManagers, getWorkerController(repos.workers))
+router.get(
+  '/:name/requests',
+  allowWorkers,
+  getWorkerRequestsController(repos.workers),
+)
+router.get(
+  '/:name/vacations',
+  allowWorkers,
+  getWorkerVacationsController(repos.workers),
+)
+router.put(
+  '/:name/vacations',
+  allowWorkers,
+  makeVacationsRequestController(repos.workers),
+)
 
 export default router

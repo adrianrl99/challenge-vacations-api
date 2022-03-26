@@ -1,0 +1,481 @@
+{
+	"info": {
+		"_postman_id": "de35d887-febe-4806-85f6-caed8ca03fb9",
+		"name": "vacations-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "signin (worker)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"pm.collectionVariables.set(\"token\", pm.response.headers.get('X-AuthToken'));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"worker1\",\n    \"type\": \"worker\",\n    \"password\": \"!Q2w3e4r\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/auth/signin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signin (manager)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"pm.collectionVariables.set(\"token\", pm.response.headers.get('X-AuthToken'));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"manager1\",\n    \"type\": \"manager\",\n    \"password\": \"!Q2w3e4r\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/auth/signin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "managers",
+			"item": [
+				{
+					"name": "getManagers (only managers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/managers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"managers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "processVacationsRequest (only managers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"2\",\n  \"status\": \"approved\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/managers/request",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"managers",
+								"request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "requests",
+			"item": [
+				{
+					"name": "getRequests (only managers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"requests"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "approved",
+									"description": "Filter by status",
+									"disabled": true
+								},
+								{
+									"key": "month",
+									"value": "2",
+									"description": "Filter by month",
+									"disabled": true
+								},
+								{
+									"key": "start_date",
+									"value": "1-1-2022",
+									"description": "Filter by range of dates, also need end_date",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "1-15-2022",
+									"description": "Filter by range of dates, also need start_date",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "workers",
+			"item": [
+				{
+					"name": "getWorkers (only managers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/workers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"workers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getWorker (only managers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/workers/worker1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"workers",
+								"worker1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getWorkerRequests (only workers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/workers/worker1/requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"workers",
+								"worker1",
+								"requests"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "approved",
+									"description": "Filter by status",
+									"disabled": true
+								},
+								{
+									"key": "month",
+									"value": "2",
+									"description": "Filter by month",
+									"disabled": true
+								},
+								{
+									"key": "start_date",
+									"value": "1-1-2022",
+									"description": "Filter by range of dates, also need end_date",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "1-15-2022",
+									"description": "Filter by range of dates, also need start_date",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getWorkerVacations (only workers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/v1/workers/worker1/vacations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"workers",
+								"worker1",
+								"vacations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "makeVacationsRequest (only workers)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"1\",\n  \"vacation_start_date\": 1641013200000,\n  \"vacation_end_date\": 1641790800000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/workers/worker1/vacations",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"workers",
+								"worker1",
+								"vacations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
