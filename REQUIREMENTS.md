@@ -20,7 +20,7 @@ Your task is to build one HTTP API that allows employees to make vacation reques
   - [x] See an overview for each individual employee
   - [x] See an overview of overlapping requests
   - [x] Process an individual request and either approve or reject it
-- [ ] Write tests for your business logic
+- [x] Write tests for your business logic
 
 Each request should, at minimum, have the following signature:
 
